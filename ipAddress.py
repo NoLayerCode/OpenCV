@@ -5,14 +5,15 @@
 
 
 import re
-import csv
+from functools import reduce
 
 def ipAddress():
 	pattern = '([(\d\.)]+) - - \[(.*?)\] "(.*?)" (\d+) (.+)'
 	logfile_path = 'log_file\\apache_logs.txt'
 	Contents = open(logfile_path, "r")
-	ipList = {}
-	urlList = {}
+	ipList = dict()
+	uniqueIpList = set()
+	urlList = list()
 
 	for line in Contents:
 		log_groups = re.match(pattern, line).groups()
@@ -26,24 +27,17 @@ def ipAddress():
 			urls = subUrl[1].strip("()")
 		else:
 			urls = "-"
-		urlList[log_groups[0]] = urls
+		urlList.append((log_groups[0], urls))
 
-	# print("All IP List:\n",ipList,"\n\n")
-	print("All IP and URL:\n",urlList,"\n\n")
+	for value in ipList:
+		key = ipList[value]
+		if key == 1:
+			uniqueIpList.add(value)
+
+	print("All IP List:\n",ipList,"\n\n")
+	print("All IP List:\n",uniqueIpList,"\n\n")
+	print("All IP and URL:\n",urlList)
 	
-	# field_names = ['IP', 'URL']
-	# with open('IpAddress.csv', 'w') as csvfile:
-	# 	writer = csv.DictWriter(csvfile, fieldnames=field_names)
-	# 	writer.writeheader()
-	# 	writer.writerows(urlList)
-
-	# try:
-	# 	geeky_file = open('ipAddress.txt', 'wt')
-	# 	geeky_file.write(str(urlList))
-	# 	geeky_file.close()
-
-	# except:
-	# 	print("Unable to write to file")
 
 def main():
 	ipAddress()
