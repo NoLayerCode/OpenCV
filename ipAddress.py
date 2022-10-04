@@ -7,7 +7,7 @@ import re
 
 def ipAddress():
 	pattern = '([(\d\.)]+) - - \[(.*?)\] "(.*?)" (\d+) (.+)'
-	logfile_path = 'log_file\\apache_logs.txt'
+	logfile_path = "log_file\\apache_logs.txt"
 	Contents = open(logfile_path, "r")
 	ipList = dict()
 	uniqueIpList = set()
@@ -18,7 +18,7 @@ def ipAddress():
 		ipList[log_groups[0]] = ipList.get(log_groups[0], 0) + 1
 		splittedURL = log_groups[4].split('"')
 		urls = ""
-		if splittedURL[1] != '-':
+		if splittedURL[1] != "-":
 			urls = splittedURL[1]
 		else:
 			urls = "-"
@@ -29,10 +29,20 @@ def ipAddress():
 		if key == 1:
 			uniqueIpList.add(value)
 
-	print("All IP List:\n",ipList,"\n\n")
-	print("All Unique IP List:\n",uniqueIpList,"\n\n")
-	print("All IP and URL:\n",urlList)
-	
+	outfile = open("output_log_file\\IpList.txt","w")
+	for ip in ipList:
+		outfile.write(ip)
+		outfile.write("\n")
+
+	outfile = open("output_log_file\\uniqueIpList.txt","w")
+	for value in uniqueIpList:
+		outfile.write(value)
+		outfile.write("\n")
+
+	outfile = open("output_log_file\\IpUrlList.txt","w")
+	for value in urlList:
+		outfile.writelines(value)
+		outfile.write("\n")
 
 def main():
 	ipAddress()
