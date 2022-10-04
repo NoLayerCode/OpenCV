@@ -3,9 +3,7 @@
 # 	b) LIST OF ALL UNIQUE IP ADDRESSES
 # 	c) LIST OF IP ADDRESSES & THE VISITED URLS
 
-
 import re
-from functools import reduce
 
 def ipAddress():
 	pattern = '([(\d\.)]+) - - \[(.*?)\] "(.*?)" (\d+) (.+)'
@@ -19,12 +17,9 @@ def ipAddress():
 		log_groups = re.match(pattern, line).groups()
 		ipList[log_groups[0]] = ipList.get(log_groups[0], 0) + 1
 		splittedURL = log_groups[4].split('"')
-		subUrl = splittedURL[3].split('+')
 		urls = ""
 		if splittedURL[1] != '-':
 			urls = splittedURL[1]
-		elif len(subUrl) >= 2:
-			urls = subUrl[1].strip("()")
 		else:
 			urls = "-"
 		urlList.append((log_groups[0], urls))
@@ -35,7 +30,7 @@ def ipAddress():
 			uniqueIpList.add(value)
 
 	print("All IP List:\n",ipList,"\n\n")
-	print("All IP List:\n",uniqueIpList,"\n\n")
+	print("All Unique IP List:\n",uniqueIpList,"\n\n")
 	print("All IP and URL:\n",urlList)
 	
 
