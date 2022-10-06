@@ -17,12 +17,8 @@ def ipAddress():
 		log_groups = re.match(pattern, line).groups()
 		ipList[log_groups[0]] = ipList.get(log_groups[0], 0) + 1
 		splittedURL = log_groups[4].split('"')
-		urls = ""
 		if splittedURL[1] != "-":
-			urls = splittedURL[1]
-		else:
-			urls = "-"
-		urlList.append((log_groups[0], urls))
+			urlList.append(log_groups[0]+"\t-\t"+splittedURL[1])
 
 	for value in ipList:
 		key = ipList[value]
